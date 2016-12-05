@@ -45,3 +45,11 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+.Rproj.user/shared/notebooks/paths
+.Rproj.user/7999A7E/session-persistent-state
+
+.Rproj.user
+.Rhistory
+.RData
+inst/doc
+
