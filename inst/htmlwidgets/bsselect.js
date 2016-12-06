@@ -12,9 +12,6 @@ HTMLWidgets.widget({
 
       renderValue: function(opts) {
 
-        // still figuring out how to do this
-        el.innerHTML = opts.data;
-
         $('.selectpicker').selectpicker({
         actionsBox: opts.actionsBox,
         dropdownAlignRight: opts.dropdownAlignRight,

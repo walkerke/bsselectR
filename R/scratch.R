@@ -5,7 +5,8 @@ library(stringr)
 
 # Generate vector of PNG images
 
-vec <- list.files(path = "plots", pattern = "png", full.names = TRUE)
+vec <- list.files(path = "D:/Users/kylewalker/Box Sync/Center for Urban Studies/bikeshare/dropdown/plots",
+                  pattern = "png", full.names = TRUE)
 
 names <- str_replace(basename(vec), "\\.png", "")
 

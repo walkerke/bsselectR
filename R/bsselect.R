@@ -12,11 +12,9 @@ bsselect <- function(vector, selected = NULL,
                      liveSearchStyle = "contains", showTick = FALSE,
                      width = NULL, height = NULL, elementId = NULL)  {
 
-  data_to_send <- buildHTML(choices = vector, type = type, height = height1, width = width1)
 
   # forward options using opts
   opts = list(
-    data = data_to_send,
     actionsBox = actionsBox,
     dropdownAlignRight = dropdownAlignRight,
     dropupAuto = dropupAuto,
@@ -26,21 +24,28 @@ bsselect <- function(vector, selected = NULL,
     showTick = showTick
   )
 
-  deps <- list(
-    rmarkdown::html_dependency_jquery(),
-    rmarkdown::html_dependency_bootstrap("default")
-  )
+  # deps <- list(
+  #   rmarkdown::html_dependency_jquery(),
+  #   rmarkdown::html_dependency_bootstrap("default")
+  # )
 
   # create widget
-  htmlwidgets::createWidget(
+  widg <- htmlwidgets::createWidget(
     name = 'bsselect',
     opts,
     width = width,
     height = height,
     package = 'bsselectR',
-    elementId = elementId,
-    dependencies = deps
+    elementId = elementId
   )
+
+  # Prepend the HTML content to the widget
+
+  out <- htmlwidgets::prependContent(widg, buildHTML(choices = vector, type = type,
+                                                     height = height1, width = width1))
+
+  out
+
 }
 
 #' Shiny bindings for bsselect
