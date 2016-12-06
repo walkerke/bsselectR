@@ -1,0 +1,6 @@
+dependencies:
+  - name: bootstrap-select
+    version: 1.12.1
+    src: htmlwidgets/lib/bootstrap-select-1.12.1
+    script: dist/js/bootstrap-select.min.js
+    stylesheet: dist/css/bootstrap-select.min.css

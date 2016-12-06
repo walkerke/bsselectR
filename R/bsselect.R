@@ -24,10 +24,10 @@ bsselect <- function(vector, selected = NULL,
     showTick = showTick
   )
 
-  # deps <- list(
-  #   rmarkdown::html_dependency_jquery(),
-  #   rmarkdown::html_dependency_bootstrap("default")
-  # )
+  deps <- list(
+    rmarkdown::html_dependency_jquery(),
+    rmarkdown::html_dependency_bootstrap("default")
+  )
 
   # create widget
   widg <- htmlwidgets::createWidget(
@@ -36,7 +36,8 @@ bsselect <- function(vector, selected = NULL,
     width = width,
     height = height,
     package = 'bsselectR',
-    elementId = elementId
+    elementId = elementId,
+    dependencies = deps
   )
 
   # Prepend the HTML content to the widget
