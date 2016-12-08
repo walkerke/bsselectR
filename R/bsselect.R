@@ -6,22 +6,15 @@
 #'
 #' @export
 bsselect <- function(vector, selected = NULL,
-                     type = c("url", "img", "iframe"),
-                     height1 = "auto", width1 = "100%", actionsBox = FALSE, dropdownAlignRight = FALSE,
-                     dropupAuto = TRUE, header = FALSE, liveSearch = FALSE,
-                     liveSearchStyle = "contains", showTick = FALSE,
-                     width = NULL, height = NULL, elementId = NULL)  {
+                     type = c("text", "img", "iframe"),
+                     frame_height = "500", frame_width = "100%", actions_box = FALSE, align_right = FALSE,
+                     dropup_auto = TRUE, header = FALSE, live_search = FALSE, box_width = FALSE,
+                     live_search_style = "contains", show_tick = FALSE, width = NULL,
+                     height = NULL, elementId = NULL, ...)  {
 
 
   # forward options using opts
   opts = list(
-    actionsBox = actionsBox,
-    dropdownAlignRight = dropdownAlignRight,
-    dropupAuto = dropupAuto,
-    header = header,
-    liveSearch = liveSearch,
-    liveSearchStyle = liveSearchStyle,
-    showTick = showTick
   )
 
   deps <- list(
@@ -32,7 +25,7 @@ bsselect <- function(vector, selected = NULL,
   # create widget
   widg <- htmlwidgets::createWidget(
     name = 'bsselect',
-    opts,
+    x = opts,
     width = width,
     height = height,
     package = 'bsselectR',
@@ -42,8 +35,15 @@ bsselect <- function(vector, selected = NULL,
 
   # Prepend the HTML content to the widget
 
-  out <- htmlwidgets::prependContent(widg, buildHTML(choices = vector, type = type,
-                                                     height = height1, width = width1))
+  out <- htmlwidgets::prependContent(widg, buildHTML(choices = vector, type = type, actionsBox = actions_box,
+                                                     dropdownAlignRight = align_right,
+                                                     dropupAuto = dropup_auto,
+                                                     header = header,
+                                                     liveSearch = live_search,
+                                                     liveSearchStyle = live_search_style,
+                                                     showTick = show_tick,
+                                                     height = frame_height, width = frame_width
+                                                     ))
 
   out
 
@@ -96,21 +96,33 @@ selectOptions <- function(choices, selected = NULL) {
 
 
 #' importFrom htmltools tags div img
-buildHTML <- function(choices, selected = NULL, type = c("url", "img", "iframe"),
-                      height = "auto", width = "100%") {
+buildHTML <- function(choices, selected = NULL, type = c("text", "img", "iframe"),
+                      height = "500", width = "100%", actionsBox = FALSE, dropdownAlignRight = FALSE,
+                      dropupAuto = TRUE, header = FALSE, liveSearch = FALSE, boxWidth = FALSE,
+                      liveSearchStyle = "contains", showTick = FALSE) {
 
   id1 <- stringi::stri_rand_strings(1, 10)
 
   id2 <- stringi::stri_rand_strings(1, 10)
 
+  l <- function(x) return(tolower(as.character(x)))
+
   select_tag <- tags$select(
     id = id1,
     class = "selectpicker",
+    `data-actions-box` = l(actionsBox),
+    `data-dropdown-align-right` = l(dropdownAlignRight),
+    `data-dropup-auto` = l(dropupAuto),
+    `data-header` = l(header),
+    `data-live-search` = l(liveSearch),
+    `data-live-search-style` = liveSearchStyle,
+    `data-show-tick` = l(showTick),
+    `data-width` = l(boxWidth),
     selectOptions(choices, selected)
   )
 
-  if (type == "url") {
-    return(select_tag)
+  if (type == "text") {
+    suppressWarnings(return(select_tag))
   } else if (type == "img") {
     js <- paste0('$(document).ready(function(){
                  $("#', id1, '").change(function(){
@@ -122,8 +134,8 @@ buildHTML <- function(choices, selected = NULL, type = c("url", "img", "iframe")
     out <- div(select_tag,
                img(src = choices[1],
                    name = id2,
-                   height = height,
-                   width = width),
+                   height = as.character(height),
+                   width = as.character(width)),
                tags$script(htmlwidgets::JS(js)))
     return(out)
     } else if (type == "iframe") {

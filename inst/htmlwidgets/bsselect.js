@@ -10,19 +10,7 @@ HTMLWidgets.widget({
 
     return {
 
-      renderValue: function(opts) {
-
-        $('.selectpicker').selectpicker({
-        actionsBox: opts.actionsBox,
-        dropdownAlignRight: opts.dropdownAlignRight,
-        dropupAuto: opts.dropupAuto,
-        header: opts.header,
-        liveSearch: opts.liveSearch,
-        liveSearchStyle: opts.liveSearchStyle,
-        showTick: opts.showTick
-
-        }).addTo(el);
-
+      renderValue: function() {
 
       },
 
