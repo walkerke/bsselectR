@@ -1,11 +1,20 @@
 Package: bsselectR
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Display Text, Images, and IFrames interactively in R Markdown with the
+    bootstrap-select jQuery Plugin
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Date: 2016-12-09
+Authors@R: c(person(given="Kyle", family="Walker", email="kyle.walker@tcu.edu", role=c("aut", "cre")))
+Description: Allows R users to interactively display text, images, and iframes
+    in R Markdown documents without the use of Shiny. Dropdown menus are styled with
+    the bootstrap-select jQuery plugin.
+License: MIT
 Encoding: UTF-8
 LazyData: true
+Depends:
+    R (>= 3.0.0)
+Imports:
+    rmarkdown,
+    htmlwidgets,
+    htmltools
+RoxygenNote: 5.0.1

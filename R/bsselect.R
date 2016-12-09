@@ -1,16 +1,36 @@
 #' bsselect
 #'
-#' Function to generate a drop-down menu
+#' Function to generate a drop-down menu with the bootstrap-select jQuery plugin in an R Markdown document
+#'
+#' @param vector A named vector of values to send to the bootstrap-select dropdown menu.
+#' @param selected The selected option; currently disabled
+#' @param type One of \code{"text"}, \code{"img"}, or \code{"iframe"}.
+#' @param frame_height The height of the image or iframe.  Defaults to 500px.
+#' @param frame_width The width of the image or iframe.  Defaults to \code{"100%"}.
+#' @param align_right Whether to align the menu to the right instead of the left.  Defaults to FALSE (left).
+#' @param dropup_auto Creates a drop-up menu automatically if there is not enough space to drop down.  Defaults to TRUE.
+#' @param header Adds a header to the top of the menu.
+#' @param live_search When TRUE, adds a search box to the drop-down menu.  Defaults to FALSE.
+#' @param box_width One of "auto", "fit", a css-width in pixels, or FALSE.
+#' @param live_search_style One of "contains" (the default) or "startsWith".
+#' @param show_tick Whether to show a check mark next to the selected option.  Defaults to FALSE.
+#' @param size The number of items to show in the window.  Defaults to "auto"; if FALSE, shows every option.
+#' @param style Add the value to the button's style.  Options include "btn-primary", "btn-info", "btn-success", "btn-warning", and "btn-danger".
+#' @param width The width of the htmlwidget.
+#' @param height The height of the htmlwidget.
+#' @param elementId The element ID.
+#'
+#' @seealso \url{https://silviomoreto.github.io/bootstrap-select/}
 #'
 #' @import htmlwidgets htmltools
 #'
 #' @export
 bsselect <- function(vector, selected = NULL,
                      type = c("text", "img", "iframe"),
-                     frame_height = "500", frame_width = "100%", actions_box = FALSE, align_right = FALSE,
+                     frame_height = "500", frame_width = "100%", align_right = FALSE,
                      dropup_auto = TRUE, header = FALSE, live_search = FALSE, box_width = FALSE,
-                     live_search_style = "contains", show_tick = FALSE, width = NULL,
-                     height = NULL, elementId = NULL, ...)  {
+                     live_search_style = "contains", show_tick = FALSE, size = "auto",
+                     style = NULL, width = NULL, height = NULL, elementId = NULL, ...)  {
 
 
   # forward options using opts
@@ -35,13 +55,15 @@ bsselect <- function(vector, selected = NULL,
 
   # Prepend the HTML content to the widget
 
-  out <- htmlwidgets::prependContent(widg, buildHTML(choices = vector, type = type, actionsBox = actions_box,
+  out <- htmlwidgets::prependContent(widg, buildHTML(choices = vector, type = type,
                                                      dropdownAlignRight = align_right,
                                                      dropupAuto = dropup_auto,
                                                      header = header,
                                                      liveSearch = live_search,
                                                      liveSearchStyle = live_search_style,
                                                      showTick = show_tick,
+                                                     size = size,
+                                                     style = style,
                                                      height = frame_height, width = frame_width
                                                      ))
 
@@ -77,84 +99,3 @@ renderBsselect <- function(expr, env = parent.frame(), quoted = FALSE) {
   htmlwidgets::shinyRenderWidget(expr, bsselectOutput, env, quoted = TRUE)
 }
 
-#' importFrom htmltools htmlEscape HTML
-selectOptions <- function(choices, selected = NULL) {
-  if (is.null(names(choices))) choices <- setNames(choices, choices)
-
-  html <- mapply(choices, names(choices), FUN = function(choice, label) {
-    sprintf(
-      '<option value="%s"%s>%s</option>',
-      htmlEscape(choice, TRUE),
-      if (choice %in% selected) ' selected' else '',
-      htmlEscape(label)
-    )
-  }
-  )
-
-  HTML(paste(html, collapse = '\n'))
-}
-
-
-#' importFrom htmltools tags div img
-buildHTML <- function(choices, selected = NULL, type = c("text", "img", "iframe"),
-                      height = "500", width = "100%", actionsBox = FALSE, dropdownAlignRight = FALSE,
-                      dropupAuto = TRUE, header = FALSE, liveSearch = FALSE, boxWidth = FALSE,
-                      liveSearchStyle = "contains", showTick = FALSE) {
-
-  id1 <- stringi::stri_rand_strings(1, 10)
-
-  id2 <- stringi::stri_rand_strings(1, 10)
-
-  l <- function(x) return(tolower(as.character(x)))
-
-  select_tag <- tags$select(
-    id = id1,
-    class = "selectpicker",
-    `data-actions-box` = l(actionsBox),
-    `data-dropdown-align-right` = l(dropdownAlignRight),
-    `data-dropup-auto` = l(dropupAuto),
-    `data-header` = l(header),
-    `data-live-search` = l(liveSearch),
-    `data-live-search-style` = liveSearchStyle,
-    `data-show-tick` = l(showTick),
-    `data-width` = l(boxWidth),
-    selectOptions(choices, selected)
-  )
-
-  if (type == "text") {
-    suppressWarnings(return(select_tag))
-  } else if (type == "img") {
-    js <- paste0('$(document).ready(function(){
-                 $("#', id1, '").change(function(){
-                 $("img[name=', id2, ']").attr("src",$(this).val());
-
-                 });
-
-  });')
-    out <- div(select_tag,
-               img(src = choices[1],
-                   name = id2,
-                   height = as.character(height),
-                   width = as.character(width)),
-               tags$script(htmlwidgets::JS(js)))
-    return(out)
-    } else if (type == "iframe") {
-      js <- paste0('$(document).ready(function(){
-                   $("#', id1, '").change(function(){
-                   $("#', id2, '").attr("src",$(this).val());
-
-                   });
-
-    });')
-
-      out <- div(select_tag,
-                 tags$iframe(src = choices[1],
-                             frameborder = "0",
-                             height = height,
-                             width = width,
-                             id = id2),
-                 tags$script(htmlwidgets::JS(js)))
-      return(out)
-
-      }
-  }
