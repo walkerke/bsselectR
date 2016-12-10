@@ -51,12 +51,12 @@ buildHTML <- function(choices, selected = NULL, type = c("text", "img", "iframe"
                   });
 });')
 
-    out <- div(select_tag,
+    out <- tags$html(select_tag,
                p(choices[1],
                  id = id2),
                tags$script(htmlwidgets::JS(js)))
 
-    return(out)
+    return(renderTags(out, indent = FALSE))
 
   } else if (type == "img") {
     js <- paste0('$(document).ready(function(){
@@ -66,13 +66,13 @@ buildHTML <- function(choices, selected = NULL, type = c("text", "img", "iframe"
                  });
 
   });')
-    out <- div(select_tag,
+    out <- tags$html(select_tag,
                img(src = choices[1],
                    name = id2,
                    height = as.character(height),
                    width = as.character(width)),
                tags$script(htmlwidgets::JS(js)))
-    return(out)
+    return(renderTags(out, indent = FALSE))
     } else if (type == "iframe") {
       js <- paste0('$(document).ready(function(){
                    $("#', id1, '").change(function(){
@@ -82,14 +82,14 @@ buildHTML <- function(choices, selected = NULL, type = c("text", "img", "iframe"
 
     });')
 
-      out <- div(select_tag,
+      out <- tags$html(select_tag,
                  tags$iframe(src = choices[1],
                              frameborder = "0",
                              height = height,
                              width = width,
                              id = id2),
                  tags$script(htmlwidgets::JS(js)))
-      return(out)
+      return(renderTags(out, indent = FALSE))
 
       }
   }
