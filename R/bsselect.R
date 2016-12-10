@@ -6,7 +6,7 @@
 #' @param selected The selected option; currently disabled
 #' @param type One of \code{"text"}, \code{"img"}, or \code{"iframe"}.
 #' @param frame_height The height of the image or iframe.  Defaults to 500px.
-#' @param frame_width The width of the image or iframe.  Defaults to \code{"100%"}.
+#' @param frame_width The width of the image or iframe.
 #' @param align_right Whether to align the menu to the right instead of the left.  Defaults to FALSE.
 #' @param dropup_auto Creates a drop-up menu automatically if there is not enough space to drop down.  Defaults to TRUE.
 #' @param header Adds a header to the top of the menu.

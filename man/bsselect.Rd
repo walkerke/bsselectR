@@ -20,6 +20,8 @@ bsselect(vector, selected = NULL, type = c("text", "img", "iframe"),
 
 \item{frame_height}{The height of the image or iframe.  Defaults to 500px.}
 
+\item{frame_width}{The width of the image or iframe.}
+
 \item{align_right}{Whether to align the menu to the right instead of the left.  Defaults to FALSE.}
 
 \item{dropup_auto}{Creates a drop-up menu automatically if there is not enough space to drop down.  Defaults to TRUE.}
