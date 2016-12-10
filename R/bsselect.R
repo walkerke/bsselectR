@@ -37,10 +37,6 @@ bsselect <- function(vector, selected = NULL,
   opts = list(
   )
 
-  deps <- list(
-    rmarkdown::html_dependency_jquery(),
-    rmarkdown::html_dependency_bootstrap("default")
-  )
 
   # create widget
   widg <- htmlwidgets::createWidget(
@@ -49,8 +45,7 @@ bsselect <- function(vector, selected = NULL,
     width = width,
     height = height,
     package = 'bsselectR',
-    elementId = elementId,
-    dependencies = deps
+    elementId = elementId
   )
 
   # Prepend the HTML content to the widget
@@ -98,4 +93,16 @@ renderBsselect <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
   htmlwidgets::shinyRenderWidget(expr, bsselectOutput, env, quoted = TRUE)
 }
+
+#' @keywords internal
+bsselect_html <- function(id, style, class, ...){
+  htmltools::attachDependencies(
+    htmltools::tagList(
+      tags$div(id=id, style=style, class=class, ...)
+    ),
+    value = list(
+    rmarkdown::html_dependency_jquery(),
+    rmarkdown::html_dependency_bootstrap("default")
+  )
+)}
 
