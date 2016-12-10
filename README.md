@@ -1,6 +1,8 @@
 # bsselectR
 Add bootstrap-select dropdown menus to your R Markdown documents without Shiny
 
+To install: `devtools::install_github("walkerke/bsselectR")`
+
 The `bsselect` function will generate an htmlwidget that allows you to interactively display text, images, and iframes from a named vector.  More documentation is coming soon; in the meantime, here is a preview of how the package works:  
 
 ```r
