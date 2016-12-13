@@ -12,4 +12,5 @@
 #' @import htmltools
 #' @import htmlwidgets
 #' @import rmarkdown
+#' @import stringi
 NULL
