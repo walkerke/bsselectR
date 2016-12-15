@@ -1,4 +1,5 @@
 #' @import htmltools
+#' @note code borrowed here from Shiny's selectInput
 selectOptions <- function(choices, selected = NULL) {
   if (is.null(names(choices))) choices <- setNames(choices, choices)
 
@@ -6,7 +7,7 @@ selectOptions <- function(choices, selected = NULL) {
     sprintf(
       '<option value="%s"%s>%s</option>',
       htmlEscape(choice, TRUE),
-      if (choice %in% selected) ' selected' else '',
+      if (label %in% selected) ' selected' else '',
       htmlEscape(label)
     )
   }
@@ -44,6 +45,13 @@ buildHTML <- function(choices, selected = NULL, type = c("text", "img", "iframe"
     selectOptions(choices, selected)
   )
 
+  if (is.null(selected)) {
+    sel <- choices[1]
+  } else {
+    index <- match(selected, names(choices))
+    sel <- choices[index]
+  }
+
   if (type == "text") {
     js <- paste0('$(document).ready(function(){
                   $("#', id1, '").change(function(){
@@ -52,7 +60,7 @@ buildHTML <- function(choices, selected = NULL, type = c("text", "img", "iframe"
 });')
 
     out <- tags$html(select_tag,
-               p(choices[1],
+               p(sel,
                  id = id2),
                tags$script(htmlwidgets::JS(js)))
 
@@ -67,7 +75,7 @@ buildHTML <- function(choices, selected = NULL, type = c("text", "img", "iframe"
 
   });')
     out <- tags$html(select_tag,
-               img(src = choices[1],
+               img(src = sel,
                    name = id2,
                    height = as.character(height),
                    width = as.character(width)),
@@ -83,7 +91,7 @@ buildHTML <- function(choices, selected = NULL, type = c("text", "img", "iframe"
     });')
 
       out <- tags$html(select_tag,
-                 tags$iframe(src = choices[1],
+                 tags$iframe(src = sel,
                              frameborder = "0",
                              height = height,
                              width = width,

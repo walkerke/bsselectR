@@ -3,7 +3,7 @@
 #' Function to generate a drop-down menu with the bootstrap-select jQuery plugin in an R Markdown document
 #'
 #' @param vector A named vector of values to send to the bootstrap-select dropdown menu.
-#' @param selected The selected option; currently disabled
+#' @param selected The selected option; if NULL defaults to the first element of \code{vector}.
 #' @param type One of \code{"text"}, \code{"img"}, or \code{"iframe"}.
 #' @param frame_height The height of the image or iframe.  Defaults to 500px.
 #' @param frame_width The width of the image or iframe.
@@ -50,7 +50,9 @@ bsselect <- function(vector, selected = NULL,
 
   # Prepend the HTML content to the widget
 
-  out <- htmlwidgets::prependContent(widg, buildHTML(choices = vector, type = type,
+  out <- htmlwidgets::prependContent(widg, buildHTML(choices = vector,
+                                                     selected = selected,
+                                                     type = type,
                                                      dropdownAlignRight = align_right,
                                                      dropupAuto = dropup_auto,
                                                      header = header,

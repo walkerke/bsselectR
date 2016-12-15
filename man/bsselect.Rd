@@ -14,7 +14,7 @@ bsselect(vector, selected = NULL, type = c("text", "img", "iframe"),
 \arguments{
 \item{vector}{A named vector of values to send to the bootstrap-select dropdown menu.}
 
-\item{selected}{The selected option; currently disabled}
+\item{selected}{The selected option; if NULL defaults to the first element of \code{vector}.}
 
 \item{type}{One of \code{"text"}, \code{"img"}, or \code{"iframe"}.}
 
